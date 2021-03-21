@@ -5,6 +5,7 @@ class Application:
     def __init__(self):
         self.wd = webdriver.Chrome()
         self.wd.implicitly_wait(30)
+        self.wd.maximize_window()
 
     def open_home_page(self):
         wd = self.wd
