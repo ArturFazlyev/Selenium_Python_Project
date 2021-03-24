@@ -6,10 +6,17 @@ from fixture.group import GroupHelper
 class Application:
     def __init__(self):
         self.wd = webdriver.Chrome()
-        self.wd.implicitly_wait(30)
+        self.wd.implicitly_wait(5)
         self.wd.maximize_window()
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
+
+    def is_valid(self):
+        try:
+            self.wd.current_url
+            return True
+        except:
+            return False
 
     def open_home_page(self):
         wd = self.wd
