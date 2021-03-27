@@ -6,10 +6,11 @@ fixture = None
 
 
 @pytest.fixture(scope="session")
-def app():
+def app(request):
     global fixture
+    browser = request.config.getoption("--browser")
     if fixture is None:
-        fixture = Application()
+        fixture = Application(browser=browser)
         fixture.open_home_page()
         fixture.session.login("admin", "secret")
     else:
@@ -28,3 +29,6 @@ def stop(request):
 
     request.addfinalizer(fin)
     return fixture
+
+def pytest_addoption(parser):
+    parser.addoption("--browser", action="store", default="chrome")
