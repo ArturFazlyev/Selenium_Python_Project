@@ -1,6 +1,5 @@
 import configparser
 import os
-
 import pytest
 
 from fixture.application import Application
@@ -13,7 +12,7 @@ def app(request):
     global fixture
     browser = request.config.getoption("--browser")
     config = configparser.ConfigParser()
-    print(config.read(os.path.abspath('../example.ini')))
+    config.read(os.path.abspath('../example.ini'))
     if fixture is None or not fixture.is_valid():
         fixture = Application(browser=browser)
         fixture.open_home_page(config.get("Settings", "url"))
