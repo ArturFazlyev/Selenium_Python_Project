@@ -1,3 +1,6 @@
+import configparser
+import os
+
 import pytest
 
 from fixture.application import Application
@@ -9,15 +12,12 @@ fixture = None
 def app(request):
     global fixture
     browser = request.config.getoption("--browser")
-    if fixture is None:
+    config = configparser.ConfigParser()
+    print(config.read(os.path.abspath('../example.ini')))
+    if fixture is None or not fixture.is_valid():
         fixture = Application(browser=browser)
-        fixture.open_home_page()
-        fixture.session.login("admin", "secret")
-    else:
-        if not fixture.is_valid():
-            fixture = Application()
-            fixture.open_home_page()
-            fixture.session.login("admin", "secret")
+        fixture.open_home_page(config.get("Settings", "url"))
+        fixture.session.login(config.get("Settings", "username"), config.get("Settings", "password"))
     return fixture
 
 
@@ -29,6 +29,7 @@ def stop(request):
 
     request.addfinalizer(fin)
     return fixture
+
 
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="chrome")

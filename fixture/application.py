@@ -25,9 +25,9 @@ class Application:
         except:
             return False
 
-    def open_home_page(self):
+    def open_home_page(self, url):
         wd = self.wd
-        wd.get("http://localhost/addressbook/")
+        wd.get(str(url))
 
 
     def destroy(self):
